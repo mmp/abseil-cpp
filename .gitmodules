@@ -1,0 +1,6 @@
+[submodule "cctz"]
+	path = cctz
+	url = https://github.com/mmp/cctz
+[submodule "googletest"]
+	path = googletest
+	url = https://github.com/google/googletest
