@@ -56,6 +56,13 @@
 #include <cstddef>
 #endif  // __cplusplus
 
+#if defined(__APPLE__)
+// Included for TARGET_OS_IPHONE, __IPHONE_OS_VERSION_MIN_REQUIRED,
+// __IPHONE_8_0.
+#include <Availability.h>
+#include <TargetConditionals.h>
+#endif
+
 #include "absl/base/policy_checks.h"
 
 // -----------------------------------------------------------------------------
@@ -151,12 +158,13 @@
 //
 // Checks whether C++11's `thread_local` storage duration specifier is
 // supported.
-//
-// Notes: Clang implements the `thread_local` keyword but Xcode did not support
-// the implementation until Xcode 8.
 #ifdef ABSL_HAVE_THREAD_LOCAL
 #error ABSL_HAVE_THREAD_LOCAL cannot be directly set
-#elif !defined(__apple_build_version__) || __apple_build_version__ >= 8000042
+#elif !defined(__apple_build_version__) ||   \
+    ((__apple_build_version__ >= 8000042) && \
+     !(TARGET_OS_IPHONE && __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_9_0))
+// Notes: Xcode's clang did not support `thread_local` until version
+// 8, and even then not for all iOS < 9.0.
 #define ABSL_HAVE_THREAD_LOCAL 1
 #endif
 
@@ -172,7 +180,7 @@
 #ifdef ABSL_HAVE_INTRINSIC_INT128
 #error ABSL_HAVE_INTRINSIC_INT128 cannot be directly set
 #elif (defined(__clang__) && defined(__SIZEOF_INT128__) &&               \
-       !defined(__ppc64__) && !defined(__aarch64__)) ||                  \
+       !defined(__aarch64__)) ||                                         \
     (defined(__CUDACC__) && defined(__SIZEOF_INT128__) &&                \
      __CUDACC_VER__ >= 70000) ||                                         \
     (!defined(__clang__) && !defined(__CUDACC__) && defined(__GNUC__) && \
@@ -327,7 +335,7 @@
 
 // ABSL_HAVE_STD_ANY
 //
-// Checks whether C++17 std::any is availble by checking whether <any> exists.
+// Checks whether C++17 std::any is available by checking whether <any> exists.
 #ifdef ABSL_HAVE_STD_ANY
 #error "ABSL_HAVE_STD_ANY cannot be directly set."
 #endif
@@ -362,6 +370,21 @@
 #if __has_include(<string_view>) && __cplusplus >= 201703L
 #define ABSL_HAVE_STD_STRING_VIEW 1
 #endif
+#endif
+
+// For MSVC, `__has_include` is supported in VS 2017 15.3, which is later than
+// the support for <optional>, <any>, <string_view>. So we use _MSC_VER to check
+// whether we have VS 2017 RTM (when <optional>, <any>, <string_view> is
+// implemented) or higher.
+// Also, `__cplusplus` is not correctly set by MSVC, so we use `_MSVC_LANG` to
+// check the language version.
+// TODO(zhangxy): fix tests before enabling aliasing for `std::any`,
+// `std::string_view`.
+#if defined(_MSC_VER) && _MSC_VER >= 1910 && \
+    ((defined(_MSVC_LANG) && _MSVC_LANG > 201402) || __cplusplus > 201402)
+// #define ABSL_HAVE_STD_ANY 1
+#define ABSL_HAVE_STD_OPTIONAL 1
+// #define ABSL_HAVE_STD_STRING_VIEW 1
 #endif
 
 #endif  // ABSL_BASE_CONFIG_H_

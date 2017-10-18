@@ -86,7 +86,6 @@ cc_library(
     ],
     hdrs = [
         "internal/char_map.h",
-        "internal/fastmem.h",
         "internal/ostringstream.h",
         "internal/resize_uninitialized.h",
         "internal/utf8.h",
@@ -104,6 +103,7 @@ cc_test(
     size = "small",
     srcs = ["match_test.cc"],
     copts = ABSL_TEST_COPTS,
+    visibility = ["//visibility:private"],
     deps = [
         ":strings",
         "@com_google_googletest//:gtest_main",
@@ -118,6 +118,7 @@ cc_test(
         "internal/escaping_test_common.inc",
     ],
     copts = ABSL_TEST_COPTS,
+    visibility = ["//visibility:private"],
     deps = [
         ":strings",
         "//absl/base:core_headers",
@@ -131,6 +132,7 @@ cc_test(
     size = "small",
     srcs = ["ascii_test.cc"],
     copts = ABSL_TEST_COPTS,
+    visibility = ["//visibility:private"],
     deps = [
         ":strings",
         "//absl/base:core_headers",
@@ -146,6 +148,7 @@ cc_test(
         "internal/memutil_test.cc",
     ],
     copts = ABSL_TEST_COPTS,
+    visibility = ["//visibility:private"],
     deps = [
         ":strings",
         "//absl/base:core_headers",
@@ -160,6 +163,7 @@ cc_test(
         "internal/utf8_test.cc",
     ],
     copts = ABSL_TEST_COPTS,
+    visibility = ["//visibility:private"],
     deps = [
         ":internal",
         ":strings",
@@ -173,6 +177,7 @@ cc_test(
     size = "small",
     srcs = ["string_view_test.cc"],
     copts = ABSL_TEST_COPTS + ABSL_EXCEPTIONS_FLAG,
+    visibility = ["//visibility:private"],
     deps = [
         ":strings",
         "//absl/base:config",
@@ -187,6 +192,7 @@ cc_test(
     size = "small",
     srcs = ["substitute_test.cc"],
     copts = ABSL_TEST_COPTS,
+    visibility = ["//visibility:private"],
     deps = [
         ":strings",
         "//absl/base:core_headers",
@@ -199,6 +205,7 @@ cc_test(
     size = "small",
     srcs = ["str_replace_test.cc"],
     copts = ABSL_TEST_COPTS,
+    visibility = ["//visibility:private"],
     deps = [
         ":strings",
         "@com_google_googletest//:gtest_main",
@@ -209,6 +216,7 @@ cc_test(
     name = "str_split_test",
     srcs = ["str_split_test.cc"],
     copts = ABSL_TEST_COPTS,
+    visibility = ["//visibility:private"],
     deps = [
         ":strings",
         "//absl/base:core_headers",
@@ -222,6 +230,7 @@ cc_test(
     size = "small",
     srcs = ["internal/ostringstream_test.cc"],
     copts = ABSL_TEST_COPTS,
+    visibility = ["//visibility:private"],
     deps = [
         ":internal",
         "@com_google_googletest//:gtest_main",
@@ -236,6 +245,7 @@ cc_test(
         "internal/resize_uninitialized_test.cc",
     ],
     copts = ABSL_TEST_COPTS,
+    visibility = ["//visibility:private"],
     deps = [
         "//absl/base:core_headers",
         "//absl/meta:type_traits",
@@ -248,6 +258,7 @@ cc_test(
     size = "small",
     srcs = ["str_join_test.cc"],
     copts = ABSL_TEST_COPTS,
+    visibility = ["//visibility:private"],
     deps = [
         ":strings",
         "//absl/base:core_headers",
@@ -261,6 +272,7 @@ cc_test(
     size = "small",
     srcs = ["str_cat_test.cc"],
     copts = ABSL_TEST_COPTS,
+    visibility = ["//visibility:private"],
     deps = [
         ":strings",
         "//absl/base:core_headers",
@@ -279,6 +291,7 @@ cc_test(
     tags = [
         "no_test_loonix",
     ],
+    visibility = ["//visibility:private"],
     deps = [
         ":strings",
         "//absl/base",
@@ -292,6 +305,7 @@ cc_test(
     size = "small",
     srcs = ["strip_test.cc"],
     copts = ABSL_TEST_COPTS,
+    visibility = ["//visibility:private"],
     deps = [
         ":strings",
         "@com_google_googletest//:gtest_main",

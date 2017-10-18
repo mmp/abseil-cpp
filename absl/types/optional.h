@@ -118,6 +118,13 @@ namespace absl {
 //      and `is_nothrow_swappable()` is the same as `std::is_trivial()`.
 //    * `make_optional()` cannot be declared `constexpr` due to the absence of
 //      guaranteed copy elision.
+//    * The move constructor's `noexcept` specification is stronger, i.e. if the
+//      default allocator is non-throwing (via setting
+//      `ABSL_ALLOCATOR_NOTHROW`), it evaluates to `noexcept(true)`, because
+//      we assume
+//       a) move constructors should only throw due to allocation failure and
+//       b) if T's move constructor allocates, it uses the same allocation
+//          function as the default allocator.
 template <typename T>
 class optional;
 
@@ -246,7 +253,7 @@ class optional_data_base : public optional_data_dtor_base<T> {
   }
 };
 
-// TODO(absl-team) Add another class using
+// TODO(absl-team): Add another class using
 // std::is_trivially_move_constructible trait when available to match
 // http://cplusplus.github.io/LWG/lwg-defects.html#2900, for types that
 // have trivial move but nontrivial copy.

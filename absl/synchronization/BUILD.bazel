@@ -34,6 +34,9 @@ cc_library(
         "internal/graphcycles.h",
     ],
     copts = ABSL_DEFAULT_COPTS,
+    visibility = [
+        "//absl:__subpackages__",
+    ],
     deps = [
         "//absl/base",
         "//absl/base:core_headers",
@@ -129,7 +132,6 @@ cc_library(
 cc_test(
     name = "mutex_test",
     size = "large",
-    timeout = "moderate",
     srcs = ["mutex_test.cc"],
     copts = ABSL_TEST_COPTS,
     tags = [
